@@ -1,58 +1,57 @@
 package main.java;
 
 public class Solution {
-
-    private static int[] findUnsortedSubarray(int[] input) {
+    public static int[] findUnsortedSubarray(int[] input) {
         if (input.length <= 1) {
             return new int[]{-1, -1};
         }
-        return new int[]{findLeftBorder(input), findRightBorder(input)};
+        return new int[]{findLeftUnsortedBorder(input), findRightUnsortedBorder(input)};
     }
 
-    private static int findLeftBorder(int[] input) {
-        int left = 0;
+    private static int findLeftUnsortedBorder(int[] input) {
+        int leftSortedBorder = 0;
 
         for (int i = 0; i < input.length - 1; i++) {
             if (input[i + 1] >= input[i]) {
-                left++;
+                leftSortedBorder++;
             } else {
                 break;
             }
         }
 
-        for (int i = left + 1; i < input.length; i++) {
-            for (int j = left; j >= 0 && input[i] < input[j]; j--) {
-                left--;
+        for (int i = leftSortedBorder + 1; i < input.length; i++) {
+            for (int j = leftSortedBorder; j >= 0 && input[i] < input[j]; j--) {
+                leftSortedBorder--;
             }
         }
-        if (left == input.length - 1) {
+        if (leftSortedBorder == input.length - 1) {
             // array is sorted
             return -1;
         } else {
-            return ++left;
+            return ++leftSortedBorder;
         }
     }
 
-    private static int findRightBorder(int[] input) {
-        int right = input.length - 1;
+    private static int findRightUnsortedBorder(int[] input) {
+        int rightSortedBorder = input.length - 1;
         for (int i = input.length - 1; i > 0; i--) {
             if (input[i - 1] <= input[i]) {
-                right--;
+                rightSortedBorder--;
             } else {
                 break;
             }
         }
 
-        for (int i = right - 1; i >= 0; i--) {
-            for (int j = right; j < input.length && input[i] > input[j]; j++) {
-                right++;
+        for (int i = rightSortedBorder - 1; i >= 0; i--) {
+            for (int j = rightSortedBorder; j < input.length && input[i] > input[j]; j++) {
+                rightSortedBorder++;
             }
         }
-        if (right == 0) {
+        if (rightSortedBorder == 0) {
             // array is sorted
             return -1;
         } else {
-            return --right;
+            return --rightSortedBorder;
         }
     }
 }
